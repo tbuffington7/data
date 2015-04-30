@@ -3,6 +3,12 @@
 FireCARES uses NFIRS data to calculate community risk. Below are notes on how FireCARES uses NFIRS to generate
 community risk scores.
 
+## Obtaining NFIRS Data ##
+
+According to the NFIRS help desk, there is no public location where you can download the entire NFIRS data set.  To
+obtain NFIRS data, send an email to fema-nfirshelp@fema.dhs.gov.  The data will be sent on CDs/DVDs broken up by year.
+Only the most recent year includes fire and EMS incidents, all previous years will be filtered to only fire incidents.
+
 ## Custom Tables ##
 
 **buildingfires**: NFIRS data filtered to only building fires.
