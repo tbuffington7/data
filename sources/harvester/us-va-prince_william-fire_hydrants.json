@@ -1,0 +1,19 @@
+{
+    "layer": "http://gisweb.pwcgov.org/arcgis/rest/services/Maps/PublicUtilities/MapServer/1/",
+    "provider": "harvester.providers.esri.RESTHarvester",
+    "country": "US",
+    "state_province": "VA",
+    "city": "Prince William",
+    "starting_chunk_size": 1000,
+    "min_id": null,
+    "max_id": null,
+    "load_destination": "fire_hydrants",
+    "load_provider": "harvester.load.mongo.GEOJSONLoader",
+    "extract_only": false,
+    "webhooks": {
+        "done": null,
+        "fail": null
+    },
+    "generated_at": "2015-05-05 21:14:52",
+    "generated_version": "0.0.1"
+}
