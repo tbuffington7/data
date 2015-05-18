@@ -1,0 +1,20 @@
+{
+    "layer": "http://gis.charleston-sc.gov/arcgis/rest/services/Internal/mapnetInternal/MapServer/8", 
+    "provider": "harvester.providers.esri.RESTHarvester", 
+    "country": "US", 
+    "state_province": "SC", 
+    "city": "Charleston", 
+    "stateco_fips": "45133", 
+    "starting_chunk_size": 1000, 
+    "min_id": null, 
+    "max_id": null, 
+    "load_destination": "fire_hydrants", 
+    "load_provider": "harvester.load.mongo.GEOJSONLoader", 
+    "extract_only": false, 
+    "webhooks": {
+        "done": null,
+        "fail": null
+    }, 
+    "generated_at": "2015-05-18 15:47:03", 
+    "generated_version": "0.0.2"
+}
