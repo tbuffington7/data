@@ -1,0 +1,27 @@
+{
+    "layer": "http://maps.alexandriava.gov/alexmaps/rest/services/alxParcels/MapServer/0",
+    "provider": "harvester.providers.esri.RESTHarvester",
+    "country": "US",
+    "state_province": "VA",
+    "city": "Alexandria",
+    "stateco_fips": "51510",
+    "starting_chunk_size": 1000,
+    "min_id": null,
+    "max_id": null,
+    "load_destination": "parcels",
+    "load_provider": "harvester.load.mongo.GEOJSONLoader",
+    "extract_only": false,
+    "webhook": {
+        "done": null,
+        "fail": null
+    },
+    "pruners": [
+        "harvester.transform.prune.null_geometry",
+        "harvester.transform.prune.prune_by_ids:ids=[12729]"
+    ],
+    "transformers": [
+        "harvester.transform.alter.fix_duplicate_points"
+    ],
+    "generated_at": "2015-05-19 02:45:38",
+    "generated_version": "0.0.3"
+}
