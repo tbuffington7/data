@@ -10,6 +10,10 @@
     "max_id": null,
     "load_destination": "parcels",
     "load_provider": "harvester.load.mongo.GEOJSONLoader",
+    "load_provider_parameters": {
+        "id_field": "OBJECTID",
+        "bulk": false
+    },
     "extract_only": false,
     "webhook": {
         "done": null,
