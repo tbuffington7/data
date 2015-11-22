@@ -609,6 +609,8 @@ INSERT INTO basicincident(
        prop_val, cont_val, ff_death, oth_death, ff_inj, oth_inj, det_alert,
        haz_rel, mixed_use, prop_use, census
   FROM basicincident_2013);
+  
+UPDATE fireincident_2013 set fire_sprd=null where fire_sprd='';
 
 -- 6601273 pre - 7155944 post (many dups in fireincident_2013 ~500k)
 INSERT INTO fireincident(
