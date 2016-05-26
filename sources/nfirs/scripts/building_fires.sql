@@ -43,6 +43,6 @@ ALTER TABLE tempfire ADD PRIMARY KEY (state, fdid, inc_date, inc_no, exp_no);
 CREATE TABLE buildingfires AS
   SELECT * FROM basicincident b
   INNER JOIN tempfire f USING (state, fdid, inc_date, inc_no, exp_no)
-  WHERE b.aid NOT IN ('3','4') AND (((b.inc_date BETWEEN '20020101' AND '20071231' AND b.inc_type IN ('111','112','120','121','122','123')) OR (b.inc_date BETWEEN '20080101' AND '20131231' AND b.inc_type IN ('111','120','121','122','123')) AND f.struc_type IN ('1','2')) OR b.inc_type IN ('113','114','115','116','117','118') AND (f.struc_type IN ('1','2') OR f.struc_type IS NULL));
+  WHERE b.aid NOT IN ('3','4') AND (((b.inc_date BETWEEN '20020101' AND '20071231' AND b.inc_type IN ('111','112','120','121','122','123')) OR (b.inc_date BETWEEN '20080101' AND '20141231' AND b.inc_type IN ('111','120','121','122','123')) AND f.struc_type IN ('1','2')) OR b.inc_type IN ('113','114','115','116','117','118') AND (f.struc_type IN ('1','2') OR f.struc_type IS NULL));
 
 DROP TABLE tempfire;
