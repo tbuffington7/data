@@ -59,4 +59,5 @@ WITH c AS (
     WHERE inc_type like '1%' or f.state is not null;
 
 
-create index casualties_fire_idx_geoid_year ON nist.casualties_fire (geoid, year);
+create index casualties_fire_idx_geoid_year
+  ON nist.casualties_fire (geoid, year);
