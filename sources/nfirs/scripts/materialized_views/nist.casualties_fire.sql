@@ -51,7 +51,11 @@ WITH c AS (
       WHEN b.prop_use NOT IN ( '419', '644', '645' ) AND substring(b.prop_use, 1, 1) IN ( '4', '5', '6', '7', '8' ) AND ( f.bldg_above IS NULL OR f.bldg_above::int < 7 ) THEN 'Med Risk'
       ELSE 'High Risk'
     END AS risk,
-    '14000US' || substring(bkgpidfp10, 6, 6) AS geoid, a.geom
+     CASE
+       WHEN a.bkgpidfp10 IS NULL THEN NULL
+       ELSE  '14000US'::text || "substring"(a.bkgpidfp10::text, 1, 11)
+     END AS geoid,
+     a.geom
     FROM C
     JOIN basicincident b USING (state, fdid, inc_date, inc_no, exp_no)
     LEFT JOIN incidentaddress a USING (state, fdid, inc_date, inc_no, exp_no)
@@ -61,3 +65,4 @@ WITH c AS (
 
 create index casualties_fire_idx_geoid_year
   ON nist.casualties_fire (geoid, year);
+
