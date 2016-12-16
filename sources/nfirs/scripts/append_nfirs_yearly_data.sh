@@ -582,12 +582,12 @@ alter table buildingfires rename to buildingfires_prior_to_${YEAR};
 -- Move to geocoding_${YEAR} schema for archival purposes
 
 create schema if not exists geocoding_${YEAR};
-alter table address_to_geo_2013 set schema geocoding_${YEAR};
-alter table address_to_geo_aa_2013 set schema geocoding_${YEAR};
-alter table address_to_geo_ab_2013 set schema geocoding_${YEAR};
-alter table address_to_geo_ac_2013 set schema geocoding_${YEAR};
-alter table address_to_geo_ad_2013 set schema geocoding_${YEAR};
-alter table address_to_geo_ae_2013 set schema geocoding_${YEAR};
+alter table address_to_geo_${YEAR} set schema geocoding_${YEAR};
+alter table address_to_geo_aa_${YEAR} set schema geocoding_${YEAR};
+alter table address_to_geo_ab_${YEAR} set schema geocoding_${YEAR};
+alter table address_to_geo_ac_${YEAR} set schema geocoding_${YEAR};
+alter table address_to_geo_ad_${YEAR} set schema geocoding_${YEAR};
+alter table address_to_geo_ae_${YEAR} set schema geocoding_${YEAR};
 
 
 EOF
