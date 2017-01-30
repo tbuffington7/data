@@ -8,6 +8,8 @@ select geom, 'high rise' as type, row_to_json(row)::jsonb as data from (select *
 UNION
 select geom, 'public assembly' as type, row_to_json(row)::jsonb as data from (select * from usgs.public_assembly) row
 UNION
+select geom, 'other' as type, row_to_json(row)::jsonb as data from (select * from usgs.other_high_risk) row
+UNION
 select geom, 'explosive plant' as type, row_to_json(row)::jsonb as data from (select * from eia.biodiesel_plants) row
 UNION
 select geom, 'explosive plant' as type, row_to_json(row)::jsonb as data from (select * from eia.ethanol_plants) row
