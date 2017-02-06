@@ -58,4 +58,4 @@ target/
 .idea
 *~
 
-source/nfirs/scripts/.ipynb_checkpoints
+.ipynb_checkpoints
