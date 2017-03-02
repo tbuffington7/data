@@ -9,3 +9,4 @@ sh==1.12.9
 ipython-sql==0.3.6
 Shapely==1.5.17.post1
 pretty==0.1
+tabulate==0.7.7
