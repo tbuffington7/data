@@ -93,7 +93,6 @@ ogr2ogr -f PostgreSQL -s_srs EPSG:3857 -t_srs EPSG:4326 PG:dbname=nfirs15 incide
 ogr2ogr -f PostgreSQL -s_srs EPSG:3857 -t_srs EPSG:4326 PG:dbname=nfirs15 incident_address_ae_2015_p2_042017_USA_loc.shp
 ogr2ogr -f PostgreSQL -s_srs EPSG:3857 -t_srs EPSG:4326 PG:dbname=nfirs15 incident_address_af_2015_p2_042017_USA_loc.shp
 ogr2ogr -f PostgreSQL -s_srs EPSG:3857 -t_srs EPSG:4326 PG:dbname=nfirs15 incident_address_ag_2015_p2_042017_USA_loc.shp
-
 ogr2ogr -f PostgreSQL -s_srs EPSG:3857 -t_srs EPSG:4326 PG:dbname=nfirs15 incident_address_ah_2015_p2_042017_USA_loc.shp
 ogr2ogr -f PostgreSQL -s_srs EPSG:3857 -t_srs EPSG:4326 PG:dbname=nfirs15 incident_address_ai_2015_p2_042017_USA_loc.shp
 ogr2ogr -f PostgreSQL -s_srs EPSG:3857 -t_srs EPSG:4326 PG:dbname=nfirs15 incident_address_aj_2015_p2_042017_USA_loc.shp
@@ -106,6 +105,7 @@ ogr2ogr -f PostgreSQL -s_srs EPSG:3857 -t_srs EPSG:4326 PG:dbname=nfirs15 incide
 ogr2ogr -f PostgreSQL -s_srs EPSG:3857 -t_srs EPSG:4326 PG:dbname=nfirs15 incident_address_aq_2015_p2_042017_USA_loc.shp
 ogr2ogr -f PostgreSQL -s_srs EPSG:3857 -t_srs EPSG:4326 PG:dbname=nfirs15 incident_address_ar_2015_p2_042017_USA_loc.shp
 ogr2ogr -f PostgreSQL -s_srs EPSG:3857 -t_srs EPSG:4326 PG:dbname=nfirs15 incident_address_as_2015_p2_042017_USA_loc.shp
+
 ogr2ogr -f PostgreSQL -s_srs EPSG:3857 -t_srs EPSG:4326 PG:dbname=nfirs15 incident_address_at_2015_p2_042017_USA_loc.shp
 ogr2ogr -f PostgreSQL -s_srs EPSG:3857 -t_srs EPSG:4326 PG:dbname=nfirs15 incident_address_au_2015_p2_042017_USA_loc.shp
 ogr2ogr -f PostgreSQL -s_srs EPSG:3857 -t_srs EPSG:4326 PG:dbname=nfirs15 incident_address_av_2015_p2_042017_USA_loc.shp
