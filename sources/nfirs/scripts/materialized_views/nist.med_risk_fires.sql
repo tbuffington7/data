@@ -126,7 +126,7 @@ CREATE MATERIALIZED VIEW nist.med_risk_fires AS
    FROM nist.tract_years tr
      LEFT JOIN f ON tr.tr10_fid = f.geoid AND tr.year::double precision = f.year
      LEFT JOIN d ON tr.fc_dept_id = d.fd_id AND tr.year::double precision = d.year
-     LEFT JOIN nist.svi2010 svi ON tr.tr10_fid = ('14000US'::text || svi.fips::text)
+     LEFT JOIN nist.svi2010 svi ON tr.tr10_fid = ('14000US'::text || lpad(svi.fips::text, 11, '0'))
      LEFT JOIN nist.acs_est_new acs ON tr.tr10_fid = acs.geoid AND
         CASE
             WHEN tr.year < 2008 THEN 2008
