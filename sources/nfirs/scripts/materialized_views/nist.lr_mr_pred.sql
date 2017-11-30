@@ -55,7 +55,7 @@ CREATE MATERIALIZED VIEW nist.lr_mr_pred AS
     sm.adult_smoke AS smoke_st,
     sc.smoking_pct AS smoke_cty
    FROM nist.tract_years tr
-     LEFT JOIN nist.svi2010 svi ON tr.tr10_fid = ('14000US'::text || svi.fips::text)
+     LEFT JOIN nist.svi2010 svi ON tr.tr10_fid = ('14000US'::text || lpad(svi.fips::text, 11, '0'))
      LEFT JOIN firestation_firedepartment g ON tr.state::text = g.state::text AND tr.fdid::text = g.fdid::text
      LEFT JOIN nist.acs_est_new acs ON tr.tr10_fid = acs.geoid AND acs.year = 2015::double precision
      LEFT JOIN nist.sins sm ON tr.state::text = sm.postal_code AND sm.year = 2010

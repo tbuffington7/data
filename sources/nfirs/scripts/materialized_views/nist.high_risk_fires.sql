@@ -121,7 +121,7 @@ CREATE MATERIALIZED VIEW nist.high_risk_fires AS
    FROM f
      LEFT JOIN nist.tract_years t ON f.year = t.year AND f.geoid = t.tr10_fid
      LEFT JOIN d ON t.year::double precision = d.year AND t.fc_dept_id = d.fd_id
-     LEFT JOIN nist.svi2010 svi ON f.geoid = ('14000US'::text || svi.fips::text)
+     LEFT JOIN nist.svi2010 svi ON f.geoid = ('14000US'::text || lpad(svi.fips::text, 11, '0'))
      LEFT JOIN nist.acs_est_new acs ON f.geoid = acs.geoid AND
         CASE
             WHEN f.year < 2008 THEN 2008

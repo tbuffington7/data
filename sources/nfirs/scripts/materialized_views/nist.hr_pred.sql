@@ -71,7 +71,7 @@ CREATE MATERIALIZED VIEW nist.hr_pred AS
    FROM f
      LEFT JOIN nist.tract_years t ON f.geoid = t.tr10_fid
      LEFT JOIN firestation_firedepartment g ON t.state::text = g.state::text AND t.fdid::text = g.fdid::text
-     LEFT JOIN nist.svi2010 svi ON f.geoid = ('14000US'::text || svi.fips::text)
+     LEFT JOIN nist.svi2010 svi ON f.geoid = ('14000US'::text || lpad(svi.fips::text, 11, '0'))
      LEFT JOIN nist.acs_est_new acs ON f.geoid = acs.geoid AND acs.year = 2015::double precision
      LEFT JOIN nist.sins sm ON t.state::text = sm.postal_code AND sm.year = 2010
      LEFT JOIN nist.sins_county sc ON "substring"(f.geoid, 8, 5) = sc.fips
