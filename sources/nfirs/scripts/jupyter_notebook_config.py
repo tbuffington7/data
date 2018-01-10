@@ -205,7 +205,7 @@ c.NotebookApp.ip = '192.168.33.15'
 #  platform dependent and determined by the python standard library `webbrowser`
 #  module, unless it is overridden using the --browser (NotebookApp.browser)
 #  configuration option.
-#c.NotebookApp.open_browser = True
+c.NotebookApp.open_browser = True
 
 ## Hashed password to use for web authentication.
 #  
@@ -222,10 +222,10 @@ c.NotebookApp.ip = '192.168.33.15'
 #  
 #  In such a case, server the notebook server on localhost is not secure since
 #  any user can connect to the notebook server via ssh.
-#c.NotebookApp.password_required = False
+c.NotebookApp.password_required = False
 
 ## The port the notebook server will listen on.
-c.NotebookApp.port = 8002
+c.NotebookApp.port = 8007
 
 ## The number of additional ports to try if the specified port is not available.
 c.NotebookApp.port_retries = 50
@@ -448,7 +448,7 @@ c.NotebookApp.port_retries = 50
 #c.Session.unpacker = 'json'
 
 ## Username for the Session. Default is your system username.
-#c.Session.username = u'root'
+#c.Session.username = u'vagrant'
 
 #------------------------------------------------------------------------------
 # MultiKernelManager(LoggingConfigurable) configuration
