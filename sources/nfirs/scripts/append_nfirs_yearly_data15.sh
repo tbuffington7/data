@@ -83,11 +83,25 @@ alter table geocoding_2015.geocoded_addresses alter column zip5 type character v
 update geocoding_2015.geocoded_addresses set zip5 = lpad(zip5, 5, '0');
 update geocoding_2015.geocoded_addresses set apt_no = '' where apt_no is null;
 
+
 create table public.arson_bk as select * from public.arson;
 create table public.arsonagencyreferal_bk as select * from public.arsonagencyreferal;
 create table public.arsonjuvsub_bk as select * from public.arsonjuvsub;
 create table public.basicaid_bk as select * from public.basicaid;
-create table public.arson_bk as select * from public.arson;
+create table public.incidentaddress_bk as select * from public.incidentaddress;
+create table public.fireincident_bk as select * from public.fireincident;
+create table public.ems_bk as select * from public.ems;
+create table public.wildlands_bk as select * from public.wildlands;
+create table public.civiliancasualty_bk as select * from public.civiliancasualty;
+create table public.fdheader_bk as select * from public.fdheader;
+create table public.hazmobprop_bk as select * from public.hazmobprop;
+create table public.ffcasualty_bk as select * from public.ffcasualty;
+create table public.ffequipfail_bk as select * from public.ffequipfail;
+create table public.basicincident_bk as select * from public.basicincident;
+create table public.hazchem_bk as select * from public.hazchem;
+create table public.hazmat_bk as select * from public.hazmat;
+create table public.hazmatequipinvolved_bk as select * from public.hazmatequipinvolved;
+
 
 -- 486689 pre - 526386 post
 INSERT INTO public.arson_bk(
@@ -107,8 +121,8 @@ INSERT INTO public.arson_bk(
        lab_used3, lab_used4, lab_used5, lab_used6
   FROM geocoding_2015.arson);
 
--- 299226 pre - 310659 post
-INSERT INTO public.arsonagencyreferal(
+-- 318630 pre - 324018 post
+INSERT INTO public.arsonagencyreferal_bk(
             state, fdid, inc_date, inc_no, exp_no, agency_nam, version, ag_st_num,
             ag_st_pref, ag_street, ag_st_type, ag_st_suff, ag_apt_no, ag_city,
             ag_state, ag_zip5, ag_zip4, ag_phone, ag_case_no, ag_ori, ag_fid,
@@ -119,8 +133,8 @@ INSERT INTO public.arsonagencyreferal(
        ag_fdid
   FROM geocoding_2015.arsonagencyreferal);
 
--- 495820 pre - 500459 post
-INSERT INTO public.arsonjuvsub(
+-- 505154 pre - 509462 post
+INSERT INTO public.arsonjuvsub_bk(
             state, fdid, inc_date, inc_no, exp_no, sub_seq_no, version, age,
             gender, race, ethnicity, fam_type, risk_fact1, risk_fact2, risk_fact3,
             risk_fact4, risk_fact5, risk_fact6, risk_fact7, risk_fact8, juv_dispo)
@@ -129,16 +143,16 @@ INSERT INTO public.arsonjuvsub(
        risk_fact4, risk_fact5, risk_fact6, risk_fact7, risk_fact8, juv_dispo
   FROM geocoding_2015.arsonjuvsub);
 
--- 3054542 pre - 3280569 post
-INSERT INTO public.basicaid(
+-- 3532902 pre - 3792354 post
+INSERT INTO public.basicaid_bk(
             state, fdid, inc_date, inc_no, exp_no, nfir_ver, fdidrecaid,
             fdidstrec, inc_nofdid)
     (SELECT state, fdid, inc_date, inc_no, exp_no, nfir_ver, fdidrecaid,
        fdidstrec, inc_nofdid
   FROM geocoding_2015.basicaid);
 
--- 129889 pre - 140780 post
-INSERT INTO public.civiliancasualty(
+-- 152126 pre - 163482 post
+INSERT INTO public.civiliancasualty_bk(
             state, fdid, inc_date, inc_no, exp_no, seq_number, version, gender,
             age, race, ethnicity, affiliat, inj_dt_tim, sev, cause_inj, hum_fact1,
             hum_fact2, hum_fact3, hum_fact4, hum_fact5, hum_fact6, hum_fact7,
@@ -160,8 +174,8 @@ INSERT INTO codelookup(
     (SELECT fieldid, code_value, code_descr
   FROM geocoding_2015.codelookup);
 
--- 1288306 pre - 1291244 post
-INSERT INTO public.ems(
+-- 1294841 pre - 1298950 post
+INSERT INTO public.ems_bk(
             state, fdid, inc_date, inc_no, exp_no, patient_no, version, arrival,
             transport, provider_a, age, gender, race, eth_ems, hum_fact1,
             hum_fact2, hum_fact3, hum_fact4, hum_fact5, hum_fact6, hum_fact7,
@@ -188,8 +202,8 @@ INSERT INTO public.ems(
        arr_des2, ar_rhythm, il_care, high_care, pat_status, pulse, ems_dispo
   FROM geocoding_2015.ems);
 
--- 39102 pre - 39385 post (<20 dupes)
-INSERT INTO public.fdheader(
+-- 39494 pre - 39632 post (<20 dupes)
+INSERT INTO public.fdheader_bk(
             state, fdid, fd_name, fd_str_no, fd_str_pre, fd_street, fd_str_typ,
             fd_str_suf, fd_city, fd_zip, fd_phone, fd_fax, fd_email, fd_fip_cty,
             no_station, no_pd_ff, no_vol_ff, no_vol_pdc)
@@ -198,8 +212,8 @@ INSERT INTO public.fdheader(
        no_station, no_pd_ff, no_vol_ff, no_vol_pdc
   FROM geocoding_2015.fdheader where (state, fdid) not in (select state, fdid from public.fdheader));
 
--- 100435 pre - 109327 post
-INSERT INTO public.ffcasualty(
+-- 118027 pre - 127125 post
+INSERT INTO public.ffcasualty_bk(
             state, fdid, inc_date, inc_no, exp_no, ff_seq_no, version, gender,
             career, age, inj_date, responses, assignment, phys_cond, severity,
             taken_to, activity, symptom, pabi, cause, factor, object, wio,
@@ -210,16 +224,16 @@ INSERT INTO public.ffcasualty(
        relation, story, location, vehicle, prot_eqp
   FROM geocoding_2015.ffcasualty);
 
--- 34831 pre - 35597 post
-INSERT INTO public.ffequipfail(
+-- 35588 pre - 36080 post
+INSERT INTO public.ffequipfail_bk(
             state, fdid, inc_date, inc_no, exp_no, cas_seq_no, eqp_seq_no,
             version, equip_item, eqp_prob, eqp_man, eqp_mod, eqp_ser_no)
     (SELECT state, fdid, inc_date, inc_no, exp_no, cas_seq_no, eqp_seq_no,
        version, equip_item, eqp_prob, eqp_man, eqp_mod, eqp_ser_no
   FROM geocoding_2015.ffequipfail);
 
--- 36514833 pre - 38518740 post
-INSERT INTO public.basicincident(
+-- 40635486 pre - 42795807 post
+INSERT INTO public.basicincident_bk(
             state, fdid, inc_date, inc_no, exp_no, version, dept_sta, inc_type,
             add_wild, aid, alarm, arrival, inc_cont, lu_clear, shift, alarms,
             district, act_tak1, act_tak2, act_tak3, app_mod, sup_app, ems_app,
@@ -234,10 +248,9 @@ INSERT INTO public.basicincident(
        haz_rel, mixed_use, prop_use, census
   FROM geocoding_2015.basicincident);
 
-UPDATE public.fireincident set fire_sprd=null where fire_sprd='';
 
--- 6601273 pre - 7155944 post (many dups in fireincident_2013 ~500k)
-INSERT INTO public.fireincident(
+-- 7752465 pre - 8351826 post (many dups in fireincident_2013 ~500k)
+INSERT INTO public.fireincident_bk(
             state, fdid, inc_date, inc_no, exp_no, version, num_unit, not_res,
             bldg_invol, acres_burn, less_1acre, on_site_m1, mat_stor1, on_site_m2,
             mat_stor2, on_site_m3, mat_stor3, area_orig, heat_sourc, first_ign,
@@ -266,8 +279,11 @@ INSERT INTO public.fireincident(
        aes_pres, aes_type, aes_oper, no_spr_op, aes_fail
   FROM geocoding_2015.fireincident);
 
--- 81122 pre - 98244 post
-INSERT INTO public.hazchem(
+
+UPDATE public.fireincident set fire_sprd=null where fire_sprd='';
+
+-- 98271 pre - 107260 post
+INSERT INTO public.hazchem_bk(
             state, fdid, inc_date, inc_no, exp_no, seq_number, version, un_number,
             dot_class, cas_regis, chem_name, cont_type, cont_cap, cap_unit,
             amount_rel, units_rel, phys_state, rel_into)
@@ -276,8 +292,8 @@ INSERT INTO public.hazchem(
        amount_rel, units_rel, phys_state, rel_into
   FROM geocoding_2015.hazchem)
 
--- 109463 pre - 133173 post
-INSERT INTO public.hazmat(
+-- 133177 pre - 145465 post
+INSERT INTO public.hazmat_bk(
             state, fdid, inc_date, inc_no, exp_no, version, rel_from, rel_story,
             pop_dens, affec_meas, affec_unit, evac_meas, evac_unit, peop_evac,
             bldg_evac, haz_act1, haz_act2, haz_act3, occur_firs, cause_rel,
@@ -290,16 +306,16 @@ INSERT INTO public.hazmat(
        eq_inv_rel, haz_dispo, haz_death, haz_inj
   FROM geocoding_2015.hazmat);
 
--- 14544 pre - 38254 post
-INSERT INTO public.hazmatequipinvolved(
+-- 38258 pre - 50546 post
+INSERT INTO public.hazmatequipinvolved_bk(
             state, fdid, inc_date, inc_no, exp_no, version, eq_brand, eq_model,
             eq_ser_no, eq_year)
     (SELECT state, fdid, inc_date, inc_no, exp_no, version, eq_brand, eq_model,
        eq_ser_no, eq_year
   FROM geocoding_2015.hazmatequipinvolved);
 
--- 34496 pre - 58206 post
-INSERT INTO public.hazmobprop(
+-- 58210 pre - 70498 post
+INSERT INTO public.hazmobprop_bk(
             state, fdid, inc_date, inc_no, exp_no, version, mp_type, mp_make,
             mp_model, mp_year, mp_license, mp_state, mp_dot_icc)
     (SELECT state, fdid, inc_date, inc_no, exp_no, version, mp_type, mp_make,
@@ -307,8 +323,8 @@ INSERT INTO public.hazmobprop(
   FROM geocoding_2015.hazmobprop);
 
 
--- 580964 pre - 625323 post
-INSERT INTO public.wildlands(
+-- 728789 pre - 676124 post
+INSERT INTO public.wildlands_bk(
             state, fdid, inc_date, inc_no, exp_no, version, latitude, longitude,
             township, north_sou, range, east_west, section, subsection, meridian,
             area_type, fire_cause, hum_fact1, hum_fact2, hum_fact3, hum_fact4,
@@ -335,12 +351,24 @@ INSERT INTO public.wildlands(
        spread_rat
   FROM geocoding_2015.wildlands);
 
-INSERT INTO public.incidentaddress(
+select column_name, data_type, character_maximum_length from public.columns where table_name='public.incidentaddress_bk'
+
+update geocoding_2015.geocoded_addresses
+set city= replace(city, ', Town of', '')
+update geocoding_2015.geocoded_addresses
+set city= replace(city, ', Village of', '')
+
+UPDATE geocoding_2015.geocoded_addresses SET city = substring(city from 1 for 20) where length(city) > 20;
+update geocoding_2015.geocoded_addresses set inc_no = 1000000 where inc_no = 10000000;
+update geocoding_2015.geocoded_addresses set num_mile = 99999999 where num_mile > 99999999;
+
+-- 40635500 pre - 42795821 post
+INSERT INTO public.incidentaddress_bk(
             state, fdid, inc_date, inc_no, exp_no, loc_type, num_mile, street_pre,
             streetname, streettype, streetsuf, apt_no, city, state_id, zip5,
-            zip4, x_street, addid, addid_try, geom, bkgpidfp00, bkgpidfp10, source)
+            zip4, geom)
     (SELECT state, fdid, inc_date, inc_no, exp_no, loc_type, num_mile, street_pre,
        streetname, streettype, streetsuf, apt_no, city, state_id, zip5,
-       zip4, x_street, addid, addid_try, geom, bkgpidfp00, bkgpidfp10, source
+       zip4, wkb_geometry
   FROM geocoding_2015.geocoded_addresses);
 
