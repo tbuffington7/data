@@ -103,7 +103,7 @@ create table public.hazmat_bk as select * from public.hazmat;
 create table public.hazmatequipinvolved_bk as select * from public.hazmatequipinvolved;
 
 
--- 486689 pre - 526386 post
+-- 605099 pre - 643442 post
 INSERT INTO public.arson_bk(
             state, fdid, inc_date, inc_no, exp_no, version, case_stat, avail_mfi,
             mot_facts1, mot_facts2, mot_facts3, grp_invol1, grp_invol2, grp_invol3,
