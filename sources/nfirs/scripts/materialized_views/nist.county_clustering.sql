@@ -8,7 +8,7 @@ SELECT DISTINCT
   drive_alone,     long_commute,      early_mortality, child_mortality, infant_death,  phys_distress,  mntl_distress, 
   diabetes,        hiv,               food_insecurity, no_healthy_food, drug_overdose, drug_overdose2, mv_deaths,     lack_sleep, 
   uninsured_adult, uninsured_child,   hlth_cost,       nurses,          free_lunch,    segregation1,   segregation2,  homicide, rural
-FROM ems.ems_table_cnty
+FROM nist.ems_table_cnty
 ), t2 AS (
 SELECT
   substring(geoid from 8 for 5) as geoid, sum(pop) AS pop,    sum(black) AS black,                sum(amer_es) AS amer_es,       sum(other) AS other, 
@@ -19,7 +19,7 @@ SELECT
   sum(sfr) AS sfr,             sum(units_10) AS units_10,     sum(mh) AS mh, sum(older) AS older, sum(married) AS married,       sum(unemployed) AS unemployed, 
   sum(nilf) AS nilf,           sum(fuel_gas) AS fuel_gas,     sum(fuel_tank) AS fuel_tank,        sum(fuel_oil) AS fuel_oil,     sum(fuel_coal) AS fuel_coal, 
   sum(fuel_wood) AS fuel_wood, sum(fuel_solar) AS fuel_solar, sum(fuel_other) AS fuel_other,      sum(fuel_none) AS fuel_none
-FROM ems.ems_table_cnty
+FROM nist.ems_table_cnty
 GROUP BY substring(geoid from 8 for 5)
 ), t3 AS (
 SELECT
@@ -29,15 +29,15 @@ SELECT
         WHEN inc_hh = 'null' THEN Null
         ELSE hse_units * inc_hh::double precision
       END) AS inc_hh
-FROM ems.ems_table_cnty
+FROM nist.ems_table_cnty
 GROUP BY substring(geoid from 8 for 5)
 ), c AS (
 SELECT
   geoid,
-  st_centroid(geom) as geom,
-  st_x(st_centroid(geom)) AS x,
-  st_y(st_centroid(geom)) AS y
-FROM bg.counties_2013
+  st_centroid(wkb_geometry) as geom,
+  st_x(st_centroid(wkb_geometry)) AS x,
+  st_y(st_centroid(wkb_geometry)) AS y
+FROM us_counties
 )
 SELECT 
   c.geoid,
@@ -66,7 +66,7 @@ GRANT ALL ON TABLE nist.county_clustering TO sgilbert;
 GRANT SELECT ON TABLE nist.county_clustering TO firecares;
 
 COMMENT ON MATERIALIZED VIEW nist.county_clustering
-  IS 'This summarizes the EMS predictors by rolling them up to the county level.
+  IS 'This summarizes the EMS (county) predictors by rolling them up to the county level.
 The information in subquery t1 is largely from www.countyhealthrankings.org and is
 already at the county level. So they simply need to be collected. The information in subquery
 t2 is at the census tract level, and needs to be summed up to the county level. The information
