@@ -12,7 +12,7 @@ CREATE MATERIALIZED VIEW public.dept_incidents2 AS
  WITH t0 AS (
          SELECT b.state,
             b.fdid,
-            b.inc_date % 10000 AS year,
+            extract(year from b.inc_date) AS year,
                 CASE
                     WHEN a.geom IS NOT NULL THEN 1
                     ELSE 0
@@ -30,7 +30,7 @@ CREATE MATERIALIZED VIEW public.dept_incidents2 AS
                     ELSE 1
                 END AS aid,
                 CASE
-                    WHEN ((b.inc_date % 10000) > 2001 AND (b.inc_type = ANY (ARRAY['111'::text, '120'::text, '121'::text, '122'::text, '123'::text])) OR (b.inc_date % 10000) > 2001 AND (b.inc_date % 10000) < 2008 AND b.inc_type = '112'::text) AND (f.struc_type = ANY (ARRAY['1'::text, '2'::text])) OR ((b.inc_type = ANY (ARRAY['113'::text, '114'::text, '115'::text, '116'::text, '117'::text, '118'::text])) OR b.inc_type = '110'::text AND (b.inc_date % 10000) < 2009) AND ((f.struc_type = ANY (ARRAY['1'::text, '2'::text])) OR f.struc_type IS NULL) THEN 1
+                    WHEN (extract(year from b.inc_date) > 2001 AND (b.inc_type = ANY (ARRAY['111'::text, '120'::text, '121'::text, '122'::text, '123'::text])) OR extract(year from b.inc_date) > 2001 AND extract(year from b.inc_date) < 2008 AND b.inc_type = '112'::text) AND (f.struc_type = ANY (ARRAY['1'::text, '2'::text])) OR ((b.inc_type = ANY (ARRAY['113'::text, '114'::text, '115'::text, '116'::text, '117'::text, '118'::text])) OR b.inc_type = '110'::text AND extract(year from b.inc_date) < 2009) AND ((f.struc_type = ANY (ARRAY['1'::text, '2'::text])) OR f.struc_type IS NULL) THEN 1
                     ELSE 0
                 END AS struc,
                 CASE
@@ -80,42 +80,42 @@ CREATE MATERIALIZED VIEW public.dept_incidents2 AS
 		 SELECT 
            state, 
 		   fdid, 
-		   inc_date,
+		   to_date(lpad(inc_date::text, 8, '0'), 'MMDDYYYY') AS inc_date,
 		   inc_no, 
-		   exp_no, 
+		   exp_no::text, 
 		   addr_type
-         FROM ems12_geocode
+         FROM ems.ems12_geocode
 		 UNION
 		 SELECT 
            state, 
 		   fdid, 
-		   inc_date,
+		   to_date(lpad(inc_date::text, 8, '0'), 'MMDDYYYY') AS inc_date,
 		   inc_no, 
-		   exp_no, 
+		   exp_no::text, 
 		   addr_type
-		 FROM ems13_geocode
+		 FROM ems.ems13_geocode
 		 UNION
 		 SELECT 
            state, 
 		   fdid, 
-		   inc_date,
+		   to_date(lpad(inc_date, 8, '0'), 'MMDDYYYY') AS inc_date,
 		   inc_no, 
-		   exp_no, 
+		   exp_no::text, 
 		   addr_type
-		 FROM ems14_geocode
+		 FROM ems.ems14_geocode
 		 UNION
 		 SELECT 
            state, 
 		   fdid, 
-		   inc_date,
+		   to_date(lpad(inc_date, 8, '0'), 'MMDDYYYY') AS inc_date,
 		   inc_no, 
-		   exp_no, 
+		   exp_no::text, 
 		   addr_type
-		 FROM ems15_geocode
+		 FROM ems.ems15_geocode
 		), e AS (
          SELECT ems.state,
             ems.fdid,
-            "substring"(ems.inc_date, 5, 4)::integer AS year,
+            extract(year from ems.inc_date) AS year,
             count(*) AS calls,
             sum(
                 CASE
@@ -134,7 +134,7 @@ CREATE MATERIALIZED VIEW public.dept_incidents2 AS
                 END) AS calls_loc_l
            FROM ems.basicincident ems LEFT JOIN e_l USING (state, fdid, inc_date, inc_no, exp_no)
 		   WHERE ems.inc_type LIKE '4%'
-          GROUP BY ems.state, ems.fdid, ("substring"(ems.inc_date, 5, 4)::integer)
+          GROUP BY ems.state, ems.fdid, extract(year from ems.inc_date)
         )
  SELECT
         CASE
@@ -176,9 +176,9 @@ CREATE MATERIALIZED VIEW public.dept_incidents2 AS
 
 --ALTER TABLE nist.dept_incidents2
 --  OWNER TO firecares;
-GRANT ALL ON TABLE nist.dept_incidents TO sgilbert;
-GRANT SELECT ON TABLE nist.dept_incidents TO firecares;
-COMMENT ON MATERIALIZED VIEW nist.dept_incidents
+GRANT ALL ON TABLE nist.dept_incidents2 TO sgilbert;
+GRANT SELECT ON TABLE nist.dept_incidents2 TO firecares;
+COMMENT ON MATERIALIZED VIEW nist.dept_incidents2
   IS 'Its purpose is to provide the data needed to correct for geolocation errors.
 Note this view needs to be refreshed whenever new NFIRS data is added or when records 
 are geolocated. (REFRESH MATERIALIZED VIEW nist.dept_incidents;)
@@ -191,5 +191,6 @@ the UNION term only returns DISTINCT rows, I dont have to worry about it here.
 
 This query, as written, will take a long time to run.
 
-When this query is finalized, the clause altering ownership will need to be uncommented.';
+When this query is finalized, the clause altering ownership will need to be uncommented--
+or, better yet, replace the original dept_incidents with this one.';
 
