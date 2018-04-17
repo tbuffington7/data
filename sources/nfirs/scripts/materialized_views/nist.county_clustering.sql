@@ -66,10 +66,12 @@ GRANT ALL ON TABLE nist.county_clustering TO sgilbert;
 GRANT SELECT ON TABLE nist.county_clustering TO firecares;
 
 COMMENT ON MATERIALIZED VIEW nist.county_clustering
-  IS 'This summarized the EMS predictors by rolling them up to the county level.
- The information in subquery t1 is largely from www.countyhealthrankings.org and is
- already at the county level. So they simply need to be collected. The information in subquery
- t2 is at the census tract level, and needs to be summed up to the county level. The information
- in subquery t3 is averaged per household per census tract. To roll it up to the county level 
- requires a weighted average by number of households. The terms x and y are approximate centroids
- on the county, and are used to provide a rough regionalization to the cluster algorithm.';
+  IS 'This summarizes the EMS predictors by rolling them up to the county level.
+The information in subquery t1 is largely from www.countyhealthrankings.org and is
+already at the county level. So they simply need to be collected. The information in subquery
+t2 is at the census tract level, and needs to be summed up to the county level. The information
+in subquery t3 is averaged per household per census tract. To roll it up to the county level 
+requires a weighted average by number of households. The terms x and y are approximate centroids
+on the county, and are used to provide a rough regionalization to the cluster algorithm.
+
+Eventually ownership needs to be handed off to FireCARES.';
