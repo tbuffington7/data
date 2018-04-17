@@ -65,7 +65,7 @@ CREATE MATERIALIZED VIEW nist.lr_mr_pred AS
 WITH DATA;
 
 ALTER TABLE nist.lr_mr_pred
-  OWNER TO sgilbert;
+  OWNER TO firecares;
 GRANT ALL ON TABLE nist.lr_mr_pred TO sgilbert;
 GRANT SELECT ON TABLE nist.lr_mr_pred TO firecares;
 COMMENT ON MATERIALIZED VIEW nist.lr_mr_pred
