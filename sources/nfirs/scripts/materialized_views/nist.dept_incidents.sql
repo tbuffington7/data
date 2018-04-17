@@ -178,7 +178,7 @@ CREATE MATERIALIZED VIEW public.dept_incidents2 AS
 --  OWNER TO firecares;
 GRANT ALL ON TABLE nist.dept_incidents TO sgilbert;
 GRANT SELECT ON TABLE nist.dept_incidents TO firecares;
-COMMENT ON MATERIALIZED VIEW nist.lr_mr_pred
+COMMENT ON MATERIALIZED VIEW nist.dept_incidents
   IS 'Its purpose is to provide the data needed to correct for geolocation errors.
 Note this view needs to be refreshed whenever new NFIRS data is added or when records 
 are geolocated. (REFRESH MATERIALIZED VIEW nist.dept_incidents;)

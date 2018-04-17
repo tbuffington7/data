@@ -15,16 +15,16 @@ CREATE MATERIALIZED VIEW nist.tract_years AS
         ), v AS (
          SELECT u.tr10_fid,
             u.year,
-            t.fdid,
+            max(t.fdid) as fdid,
             t.n
            FROM u
              JOIN t ON u.tr10_fid = t.tr10_fid AND u.year = t.year AND u.n_max = t.n
         ), y AS (
-         SELECT generate_series(2005, 2016) AS year
+         SELECT generate_series(2005, 2018) AS year
         ), ty AS (
          SELECT DISTINCT acs.geoid,
             y.year,
-            "substring"(acs.geoid, 8, 2) AS state
+            substring(acs.geoid, 8, 2) AS state
            FROM nist.acs2010 acs,
             y
         )
@@ -45,7 +45,9 @@ WITH DATA;
 COMMENT ON nist.tract_years IS
 'An intermediate table that is the Cartesian product of tracts and years of the study.
 It also includes some additional information for the tracts, allowing me to reduce the
-number of tables referenced.'
+number of tables referenced. There are some cases where this algorithm returns multiple 
+departments to a tract. The v subquery above resolves those ties by picking the first 
+fdid (alphabetically) as the owner of the tract.'
 
 ALTER TABLE nist.tract_years
   OWNER TO firecares;
