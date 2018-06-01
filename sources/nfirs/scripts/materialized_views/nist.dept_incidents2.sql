@@ -76,42 +76,6 @@ CREATE MATERIALIZED VIEW nist.dept_incidents2 AS
          sum(t0.located * (t0.ff_death + t0.oth_death * t0.aid)) AS deaths_loc
   FROM t0
   GROUP BY t0.state, t0.fdid, t0.year
-), e_l AS (
-  SELECT 
-    state, 
-    fdid, 
-    to_date(lpad(inc_date::text, 8, '0'), 'MMDDYYYY') AS inc_date,
-    inc_no, 
-    exp_no::text, 
-    addr_type
-  FROM ems.ems12_geocode
-UNION
-  SELECT 
-    state, 
-    fdid, 
-    to_date(lpad(inc_date::text, 8, '0'), 'MMDDYYYY') AS inc_date,
-    inc_no, 
-    exp_no::text, 
-    addr_type
-  FROM ems.ems13_geocode
-UNION
-  SELECT 
-    state, 
-    fdid, 
-    to_date(lpad(inc_date, 8, '0'), 'MMDDYYYY') AS inc_date,
-    inc_no, 
-    exp_no::text, 
-    addr_type
-  FROM ems.ems14_geocode
-UNION
-  SELECT 
-     state, 
-    fdid, 
-    to_date(lpad(inc_date, 8, '0'), 'MMDDYYYY') AS inc_date,
-    inc_no, 
-    exp_no::text, 
-    addr_type
-  FROM ems.ems15_geocode
 ), e AS (
   SELECT ems.state,
     ems.fdid,
@@ -119,21 +83,11 @@ UNION
     count(*) AS calls,
     sum(
       CASE
-        WHEN e_l.addr_type IN ('PointAddress', 'StreetAddress', 'StreetInd') THEN 1
-        ELSE 0
-      END) AS calls_loc_s,
-    sum(
-      CASE
-        WHEN e_l.addr_type IN ('PointAddress', 'StreetAddress', 'StreetInd', 'StreetName') THEN 1
-        ELSE 0
-      END) AS calls_loc_m,
-    sum(
-      CASE
-        WHEN e_l.addr_type IN ('PointAddress', 'StreetAddress', 'StreetInd', 'StreetName', 'Postal') THEN 1
-        ELSE 0
-      END) AS calls_loc_l
-  FROM ems.basicincident ems LEFT JOIN e_l USING (state, fdid, inc_date, inc_no, exp_no)
-  WHERE ems.inc_type LIKE '4%'
+        WHEN e_l.geom IS Null THEN 0
+        ELSE 1
+      END) AS calls_loc
+  FROM ems.basicincident ems LEFT JOIN ems.incidentaddress e_l USING (state, fdid, inc_date, inc_no, exp_no)
+  WHERE ems.inc_type LIKE '3%'
   GROUP BY ems.state, ems.fdid, extract(year from ems.inc_date)
 )
 SELECT
@@ -168,9 +122,7 @@ SELECT
   t.deaths,
   t.deaths_loc,
   e.calls,
-  e.calls_loc_s,
-  e.calls_loc_m,
-  e.calls_loc_l
+  e.calls_loc
 FROM t
      FULL JOIN e ON t.state = e.state AND t.fdid = e.fdid AND t.year = e.year;
 
@@ -183,11 +135,7 @@ COMMENT ON MATERIALIZED VIEW nist.dept_incidents2
 Note this view needs to be refreshed whenever new NFIRS data is added or when records 
 are geolocated. (REFRESH MATERIALIZED VIEW nist.dept_incidents;)
 
-This version incorporates ems calls. For now, the geolocations for ems calls are split
-between multiple tables. Thus, I build the e_l subquery which UNIONs those tables.
-
-I suspect (but dont know) that the 2014 and 2015 geolocated tables are overlapping. Since
-the UNION term only returns DISTINCT rows, I dont have to worry about it here.
+This version incorporates ems calls. 
 
 This query, as written, will take a long time to run.
 

@@ -1,5 +1,12 @@
 CREATE MATERIALIZED VIEW nist.county_clustering AS
-WITH t1 AS (
+WITH i AS (
+SELECT 
+  substring(geoid from 8 for 5) AS geoid,
+  count(*) as n
+FROM ems.incidentaddress a JOIN nist.census_tract_locs_swg c ON st_within(a.geom, c.geom)
+GROUP BY 
+  substring(geoid from 8 for 5)
+), t1 AS (
 SELECT DISTINCT
   substring(geoid from 8 for 5) as geoid, years_lost,  poor_health,     days_pr_hlth,  days_pr_mntl,   low_birthwt, 
   csmoking,        obesity,           food_ndx, lpa,   exercise_place,  binge, dui,    stds,           teen_births,   access2, 
@@ -26,7 +33,7 @@ SELECT
   substring(geoid from 8 for 5) as geoid, 
   sum(hse_units * ave_hh_sz) AS ave_hh_size,
   sum(CASE 
-        WHEN inc_hh = 'null' THEN Null
+        WHEN inc_hh = 'null'  OR inc_hh = '' THEN Null
         ELSE hse_units * inc_hh::double precision
       END) AS inc_hh
 FROM nist.ems_table_cnty
@@ -43,6 +50,7 @@ SELECT
   c.geoid,
   c.x,
   c.y,
+  i.n AS calls,
   pop,       black,     amer_es,    other,     hispanic,  males,     age_under5, age_5_9,    age_10_14, 
   age_15_19, age_20_24, age_25_34,  age_35_44, age_45_54, age_55_64, age_65_74,  age_75_84,  age_85_up, 
   hse_units, vacant,    renter_occ, crowded,   sfr,       units_10,  mh, older,  married,    unemployed, 
@@ -58,7 +66,8 @@ SELECT
   t3.inc_hh      / t2.hse_units AS inc_hh  
 FROM c LEFT JOIN t1 USING (geoid)
        LEFT JOIN t2 USING (geoid)
-       LEFT JOIN t3 USING (geoid);
+       LEFT JOIN t3 USING (geoid) 
+	   LEFT JOIN i USING (geoid);
 
 ALTER TABLE nist.county_clustering
   OWNER TO sgilbert;
