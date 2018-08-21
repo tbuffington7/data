@@ -11,9 +11,9 @@ SELECT DISTINCT
   substring(geoid from 8 for 5) as geoid, years_lost,  poor_health,     days_pr_hlth,  days_pr_mntl,   low_birthwt, 
   csmoking,        obesity,           food_ndx, lpa,   exercise_place,  binge, dui,    stds,           teen_births,   access2, 
   physicians,      dentists,          shrinks,         wrong_hosp,      diabetic_scrn, mammography,    high_school,   college, 
-  child_pov,       inequality,        child_sngl_prnt, social,          violent,       injury_dths,    pm10, npdes,   house_probs, 
+  child_pov,       inequality,        child_sngl_prnt, social,          violent,       injury_dths,    pm10,          house_probs, 
   drive_alone,     long_commute,      early_mortality, child_mortality, infant_death,  phys_distress,  mntl_distress, 
-  diabetes,        hiv,               food_insecurity, no_healthy_food, drug_overdose, drug_overdose2, mv_deaths,     lack_sleep, 
+  diabetes,        hiv,               food_insecurity, no_healthy_food, drug_overdose, mv_deaths,     lack_sleep, 
   uninsured_adult, uninsured_child,   hlth_cost,       nurses,          free_lunch,    segregation1,   segregation2,  homicide, rural
 FROM nist.ems_table_cnty
 ), t2 AS (
@@ -58,9 +58,9 @@ SELECT
   years_lost,      poor_health,     days_pr_hlth,    days_pr_mntl,    low_birthwt, 
   csmoking,        obesity,         food_ndx, lpa,   exercise_place,  binge, dui,    stds,           teen_births,   access2, 
   physicians,      dentists,        shrinks,         wrong_hosp,      diabetic_scrn, mammography,    high_school,   college, 
-  child_pov,       inequality,      child_sngl_prnt, social,          violent,       injury_dths,    pm10, npdes,   house_probs, 
+  child_pov,       inequality,      child_sngl_prnt, social,          violent,       injury_dths,    pm10,          house_probs, 
   drive_alone,     long_commute,    early_mortality, child_mortality, infant_death,  phys_distress,  mntl_distress, 
-  diabetes,        hiv,             food_insecurity, no_healthy_food, drug_overdose, drug_overdose2, mv_deaths,     lack_sleep, 
+  diabetes,        hiv,             food_insecurity, no_healthy_food, drug_overdose, mv_deaths,     lack_sleep, 
   uninsured_adult, uninsured_child, hlth_cost,       nurses,          free_lunch,    segregation1,   segregation2,  homicide, rural,
   t3.ave_hh_size / t2.hse_units AS ave_hh_size,
   t3.inc_hh      / t2.hse_units AS inc_hh  
