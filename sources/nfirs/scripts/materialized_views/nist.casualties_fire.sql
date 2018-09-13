@@ -56,13 +56,12 @@ WITH c AS (
        ELSE  '14000US'::text || "substring"(a.bkgpidfp10::text, 1, 11)
      END AS geoid,
      a.geom
-    FROM C
+    FROM c
     JOIN basicincident b USING (state, fdid, inc_date, inc_no, exp_no)
     LEFT JOIN incidentaddress a USING (state, fdid, inc_date, inc_no, exp_no)
     LEFT JOIN fireincident f USING (state, fdid, inc_date, inc_no, exp_no)
     WHERE inc_type like '1%' or f.state is not null;
 
-
-create index casualties_fire_idx_geoid_year
-  ON nist.casualties_fire (geoid, year);
+GRANT ALL ON TABLE nist.casualties_fire TO sgilbert;
+GRANT ALL ON TABLE nist.casualties_fire TO firecares;
 

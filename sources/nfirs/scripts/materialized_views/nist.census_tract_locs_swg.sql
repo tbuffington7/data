@@ -1,10 +1,10 @@
 CREATE MATERIALIZED VIEW nist.census_tract_locs_swg AS 
- SELECT (('14000US'::text || bg.statefp10::text) || bg.countyfp10::text) || bg.tractce10::text AS geoid,
+ SELECT '14000US'::text || bg.statefp10::text || bg.countyfp10::text || bg.tractce10::text AS geoid,
     bg.statefp10,
     bg.countyfp10,
     st_union(st_makevalid(bg.geom)) AS geom
    FROM census_block_groups_2010 bg
-  GROUP BY (('14000US'::text || bg.statefp10::text) || bg.countyfp10::text) || bg.tractce10::text, bg.statefp10, bg.countyfp10
+  GROUP BY '14000US'::text || bg.statefp10::text || bg.countyfp10::text || bg.tractce10::text, bg.statefp10, bg.countyfp10
 WITH DATA;
 
 ALTER TABLE nist.census_tract_locs_swg

@@ -1,6 +1,6 @@
 CREATE MATERIALIZED VIEW nist.hr_parcel_fires AS 
  WITH y AS (
-         SELECT generate_series(2007, 2018) AS year
+         SELECT generate_series(2007, 2019) AS year
         ), p0 AS (
          SELECT y.year,
             h.parcel_id,

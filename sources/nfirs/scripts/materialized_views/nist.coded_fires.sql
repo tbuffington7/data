@@ -2,7 +2,8 @@
 
 # Create the coded_fires intermediate table
 
-* This query collects relevant NFIRS data for each fire into a single table this query returns  all fires, not residential fires.
+* This query collects relevant NFIRS data for each fire into a single table. 
+  This query returns all fires, not just residential fires.
 * Note this view needs to be refreshed whenever new NFIRS data is added or
   when records are geolocated. (REFRESH MATERIALIZED VIEW nist.dept_incidents;)
 
@@ -18,11 +19,11 @@ CREATE MATERIALIZED VIEW nist.coded_fires AS
     b.prop_val, b.cont_val, b.ff_death, b.oth_death, b.ff_inj, b.oth_inj, b.det_alert, b.haz_rel, 
     b.mixed_use, b.prop_use, b.census, a.loc_type, a.num_mile, a.street_pre, a.streetname, a.streettype,
     a.streetsuf, a.apt_no, a.city, a.state_id, a.zip5, a.zip4, a.x_street, b.alarm AS alarm_time,
-    b.arrival AS arrival_time, b.arrival-b.alarm AS travel_time, SUBSTRING(a.bkgpidfp00, 0, 11) AS tr00_fid, SUBSTRING(a.bkgpidfp10, 0, 11) AS tr10_fid, a.geom
+    b.arrival AS arrival_time, b.arrival-b.alarm AS travel_time, SUBSTRING(a.bkgpidfp00, 1, 11) AS tr00_fid, SUBSTRING(a.bkgpidfp10, 1, 11) AS tr10_fid, a.geom
     FROM basicincident b LEFT JOIN incidentaddress a USING (state, fdid, inc_date, inc_no, exp_no)
     WHERE b.aid NOT IN ( '3' , '4') and a.geom is not NULL
 )
-  SELECT t.state, t.fdid, t.inc_date, t.inc_no, t.exp_no, extract('year' from t.inc_date) AS YEAR, t.version,
+  SELECT t.state, t.fdid, t.inc_date, t.inc_no, t.exp_no, extract('year' from t.inc_date) AS year, t.version,
   CASE
     WHEN ( EXTRACT('year' FROM t.inc_date) > 2001 AND t.inc_type IN ('111','120','121','122','123') OR EXTRACT('year' FROM t.inc_date) > 2001 AND EXTRACT('year' FROM t.inc_date) < 2008 AND t.inc_type = '112')
       AND f.struc_type IN ( '1', '2' ) OR ( t.inc_type IN( '113', '114', '115', '116', '117', '118' ) OR t.inc_type = '110' AND EXTRACT('year' FROM t.inc_date) < 2009)
@@ -37,7 +38,9 @@ CREATE MATERIALIZED VIEW nist.coded_fires AS
   END AS risk,
   t.inc_type, f.not_res, f.fire_sprd, t.prop_use,
   f.struc_type, f.struc_stat, f.bldg_above, t.alarm_time, t.arrival_time,
-  t.travel_time, t.ff_death, t.oth_death, t.ff_inj, t.oth_inj,
+  t.travel_time, f.area_orig, f.heat_sourc, f.equip_inv, f.cause_ign, f.type_mat,
+  f.fact_ign_1, f.fact_ign_2, f.detector, f.det_type, f.det_operat, 
+  t.ff_death, t.oth_death, t.ff_inj, t.oth_inj,
   '14000US' || t.tr00_fid AS geoid_00,
   '14000US' || t.tr10_fid AS geoid,
    t.geom
@@ -45,5 +48,9 @@ CREATE MATERIALIZED VIEW nist.coded_fires AS
   LEFT JOIN fireincident f USING (state, fdid, inc_date, inc_no, exp_no)
   WHERE t.inc_type LIKE '1%' OR f.state IS NOT NULL;
 
+ALTER TABLE nist.coded_fires
+  OWNER TO sgilbert;
+GRANT ALL ON TABLE nist.coded_fires2 TO sgilbert;
+GRANT ALL ON TABLE nist.coded_fires2 TO firecares;
+
 create index coded_fires_idx_year_version_incident ON nist.coded_fires (year, version, inc_type);
-WHERE cf.year > 2006 AND cf.year < 2014 AND cf.version = 5.0 AND NOT ( cf.inc_type = '112' AND cf.year > 2007 )

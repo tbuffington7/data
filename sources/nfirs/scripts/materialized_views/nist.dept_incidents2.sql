@@ -1,13 +1,3 @@
-/*
-
-# Create the dept_incidents intermediate table
-
-* Its purpose is to provide the data needed to correct for geolocation errors.
-* Note this view needs to be refreshed whenever new NFIRS data is added or
-  when records are geolocated. (REFRESH MATERIALIZED VIEW nist.dept_incidents;)
-
-
-*/
 CREATE MATERIALIZED VIEW nist.dept_incidents2 AS 
  WITH t0 AS (
    SELECT b.state,
@@ -91,18 +81,9 @@ CREATE MATERIALIZED VIEW nist.dept_incidents2 AS
   GROUP BY ems.state, ems.fdid, extract(year from ems.inc_date)
 )
 SELECT
-  CASE
-    WHEN t.state IS NULL THEN e.state
-    ELSE t.state
-  END AS state,
-  CASE
-    WHEN t.fdid IS NULL THEN e.fdid
-    ELSE t.fdid
-  END AS fdid,
-  CASE
-    WHEN t.year IS NULL THEN e.year
-    ELSE t.year
-  END AS year,
+  coalesce(t.state, e.state) AS state,
+  coalesce(t.fdid,  e.fdid ) AS fdid,
+  coalesce(t.year,  e.year ) AS year,
   t.incidents,
   t.incidents_loc,
   t.v5_incidents,

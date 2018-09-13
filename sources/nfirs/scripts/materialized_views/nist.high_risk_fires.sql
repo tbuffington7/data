@@ -123,11 +123,11 @@ CREATE MATERIALIZED VIEW nist.high_risk_fires AS
      LEFT JOIN d ON t.year::double precision = d.year AND t.fc_dept_id = d.fd_id
      LEFT JOIN nist.svi2010 svi ON f.geoid = ('14000US'::text || lpad(svi.fips::text, 11, '0'))
      LEFT JOIN nist.acs_est_new acs ON f.geoid = acs.geoid AND
-        CASE
-            WHEN f.year < 2008 THEN 2008
-            WHEN f.year > 2013 THEN 2013
-            ELSE f.year
-        END::double precision = (acs.year - 2::double precision)
+    CASE
+      WHEN tr.year < 2008 THEN 2008
+      WHEN tr.year > (select max(year) from nist.acs_est_new) - 2 THEN (select max(year) from nist.acs_est_new) - 2
+      ELSE tr.year
+    END::double precision = (acs.year - 2::double precision)
      LEFT JOIN nist.sins sm ON t.state::text = sm.postal_code AND sm.year = 2010
      LEFT JOIN nist.sins_county sc ON "substring"(f.geoid, 8, 5) = sc.fips
 WITH DATA;
@@ -140,7 +140,4 @@ COMMENT ON MATERIALIZED VIEW nist.high_risk_fires
   IS 'This summarized the fire information for each high-risk parcel by year. It also
 includes data that will be used to estimate the model. Data is from NFIRS 
 (indirectly through dept_incidents), the ACS, CoreLogic, and several other 
-sources.
-
-The main things to notice here are the hard-coded limits on the join for the  
-ACS, and the similar hard-coded dates on the SINS table.';
+sources.';
