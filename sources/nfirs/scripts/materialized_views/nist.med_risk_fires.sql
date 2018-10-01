@@ -123,7 +123,7 @@ CREATE MATERIALIZED VIEW nist.med_risk_fires AS
     acs."B12001_007" AS nilf,
     sm.adult_smoke AS smoke_st,
     sc.smoking_pct AS smoke_cty
-   FROM nist.tract_years tr
+   FROM nist.tract_years_2 tr
      LEFT JOIN f ON tr.tr10_fid = f.geoid AND tr.year::double precision = f.year
      LEFT JOIN d ON tr.fc_dept_id = d.fd_id AND tr.year::double precision = d.year
      LEFT JOIN nist.svi2010 svi ON tr.tr10_fid = ('14000US'::text || lpad(svi.fips::text, 11, '0'))

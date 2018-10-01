@@ -54,14 +54,14 @@ CREATE MATERIALIZED VIEW nist.lr_mr_pred AS
     acs."B12001_007" AS nilf,
     sm.adult_smoke AS smoke_st,
     sc.smoking_pct AS smoke_cty
-   FROM nist.tract_years tr
+   FROM nist.tract_years_2 tr
      LEFT JOIN nist.svi2010 svi ON tr.tr10_fid = ('14000US'::text || lpad(svi.fips::text, 11, '0'))
      LEFT JOIN firestation_firedepartment g ON tr.state::text = g.state::text AND tr.fdid::text = g.fdid::text
      LEFT JOIN nist.acs_est_new acs ON tr.tr10_fid = acs.geoid AND acs.year = (SELECT max(year) FROM nist.acs_est_new)
      LEFT JOIN nist.sins sm ON tr.state::text = sm.postal_code AND sm.year = 2010
      LEFT JOIN nist.sins_county sc ON "substring"(tr.tr10_fid, 8, 5) = sc.fips
      LEFT JOIN nist.med_risk_parcel_info pcl ON tr.tr10_fid = ((('14000US'::text || pcl.state_code) || pcl.cnty_code) || pcl.tract)
-  WHERE tr.year = 2014
+  WHERE tr.year = 2016
 WITH DATA;
 
 ALTER TABLE nist.lr_mr_pred

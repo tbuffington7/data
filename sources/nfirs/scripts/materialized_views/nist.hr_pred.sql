@@ -75,7 +75,7 @@ CREATE MATERIALIZED VIEW nist.hr_pred AS
      LEFT JOIN nist.acs_est_new acs ON f.geoid = acs.geoid AND acs.year = (SELECT max(year) FROM nist.acs_est_new)
      LEFT JOIN nist.sins sm ON t.state::text = sm.postal_code AND sm.year = 2010
      LEFT JOIN nist.sins_county sc ON "substring"(f.geoid, 8, 5) = sc.fips
-  WHERE t.year = 2014
+  WHERE t.year = 2016
 WITH DATA;
 
 ALTER TABLE nist.hr_pred

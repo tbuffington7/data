@@ -167,7 +167,7 @@ SELECT
     WHEN h.var_058v = 0 AND h.var_060v > 0::double precision THEN 'Infinity'::double precision
     ELSE 'NaN'::double precision
   END AS rural
-FROM nist.tract_years tr
+FROM nist.tract_years_2 tr
   LEFT JOIN f ON tr.tr10_fid::text = f.tr10_fid AND tr.year::double precision = f.year::double precision
   LEFT JOIN d ON tr.fc_dept_id = d.fd_id AND tr.year::double precision = d.year::double precision
   LEFT JOIN nist.svi2010 svi ON tr.tr10_fid::text = ('14000US'::text || lpad(svi.fips::text, 11, '0'::text))

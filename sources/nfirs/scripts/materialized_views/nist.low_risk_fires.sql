@@ -137,7 +137,7 @@ CREATE MATERIALIZED VIEW nist.low_risk_fires AS
     acs."B25040_008" AS fuel_solar,
     acs."B25040_009" AS fuel_other,
     acs."B25040_010" AS fuel_none
-   FROM nist.tract_years tr
+   FROM nist.tract_years_2 tr
      LEFT JOIN f ON tr.tr10_fid = f.geoid AND tr.year::double precision = f.year
      LEFT JOIN d ON tr.fc_dept_id = d.fd_id AND tr.year::double precision = d.year
      LEFT JOIN nist.svi2010 svi ON tr.tr10_fid = ('14000US'::text || lpad(svi.fips::character varying::text, 11, '0'::text))

@@ -4,7 +4,7 @@ CREATE MATERIALIZED VIEW nist.ems_table_500 AS
 WITH f AS (
   SELECT 
     extract(year from inc_date) as year,
-    ad.tr10_fid,
+    tr10_fid,
     count(*) AS calls
   FROM nist.coded_ems
   WHERE extract(year from inc_date) > 2006 
